@@ -1,6 +1,8 @@
 package com.konyaco.fluent.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -18,6 +20,7 @@ import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.MultiContentMeasurePolicy
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.konyaco.fluent.FluentTheme
@@ -48,9 +51,19 @@ fun InfoBar(
     ) {
         InfoBarLayout(
             title = {
+                val titleStyle = FluentTheme.typography.bodyStrong
                 CompositionLocalProvider(
-                    LocalTextStyle provides FluentTheme.typography.bodyStrong,
-                    content = title
+                    LocalTextStyle provides titleStyle,
+                    content = {
+                        //Workaround for macOS system font.
+                        Box(
+                            modifier = Modifier
+                                .heightIn(min = with(LocalDensity.current) { titleStyle.lineHeight.toDp() })
+                                .wrapContentHeight(Alignment.CenterVertically)
+                        ) {
+                            title()
+                        }
+                    }
                 )
             },
             message = {
@@ -419,9 +432,9 @@ private class InfoBarLayoutMeasurePolicy : MultiContentMeasurePolicy {
             val closeActionPlaceable = closeActionMeasurable?.measure(looseConstraints)
             val iconWidthWithSpacing = iconPlaceable?.width?.plus(iconSpacing) ?: 0
             val closeActionWidthWithSpacing =
-                closeActionPlaceable?.width?.plus(closeActionSpacing + messageSpacing) ?: 0
+                closeActionPlaceable?.width?.plus(closeActionSpacing) ?: 0
             val contentWidth =
-                (constraints.maxWidth - iconWidthWithSpacing - closeActionWidthWithSpacing)
+                (constraints.maxWidth - iconWidthWithSpacing -messageSpacing - closeActionWidthWithSpacing)
                     .coerceAtLeast(0)
             if (constraints.hasBoundedHeight) {
                 var verticalMaxHeight = looseConstraints.maxHeight - topPadding - bottomPadding
@@ -459,9 +472,9 @@ private class InfoBarLayoutMeasurePolicy : MultiContentMeasurePolicy {
                     a = constraints.minWidth,
                     b = iconWidthWithSpacing + closeActionWidthWithSpacing
                             + maxOf(
-                        a = titlePlaceable?.width ?: 0,
-                        b = messagePlaceable?.width ?: 0,
-                        c = actionButtonPlaceable?.width ?: 0
+                        a = titlePlaceable?.width?.plus(messageSpacing) ?: 0,
+                        b = messagePlaceable?.width?.plus(messageSpacing) ?: 0,
+                        c = actionButtonPlaceable?.width?.plus(messageSpacing) ?: 0
                     )
                 )
                 layout(layoutWidth, layoutHeight) {
@@ -501,13 +514,13 @@ private class InfoBarLayoutMeasurePolicy : MultiContentMeasurePolicy {
                 val actionButtonPlaceable = actionMeasurable?.measure(contentConstraints)
                 val iconWidthWithSpacing = iconPlaceable?.width?.plus(iconSpacing) ?: 0
                 val closeActionWidthWithSpacing =
-                    closeActionPlaceable?.width?.plus(closeActionSpacing + messageSpacing) ?: 0
+                    closeActionPlaceable?.width?.plus(closeActionSpacing) ?: 0
                 val contentWidth =
                     iconWidthWithSpacing + closeActionWidthWithSpacing +
                             maxOf(
-                                a = titlePlaceable?.width ?: 0,
-                                b = messagePlaceable?.width ?: 0,
-                                c = actionButtonPlaceable?.width ?: 0
+                                a = titlePlaceable?.width?.plus(messageSpacing) ?: 0,
+                                b = messagePlaceable?.width?.plus(messageSpacing) ?: 0,
+                                c = actionButtonPlaceable?.width?.plus(messageSpacing) ?: 0
                             )
                 val layoutWidth = if (constraints.hasBoundedWidth) {
                     maxOf(constraints.minWidth, contentWidth)
