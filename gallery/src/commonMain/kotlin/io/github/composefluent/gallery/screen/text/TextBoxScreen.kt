@@ -1,11 +1,16 @@
 package io.github.composefluent.gallery.screen.text
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import io.github.composefluent.component.SecureTextField
 import io.github.composefluent.component.Text
 import io.github.composefluent.component.TextField
 import io.github.composefluent.gallery.annotation.Component
@@ -36,6 +41,12 @@ fun TextBoxScreen() {
             sourceCode = sourceCodeOfTextBoxHeaderSample,
             content = { TextBoxHeaderSample() }
         )
+
+        Section(
+            title = "A SecureTextBox.",
+            sourceCode = sourceCodeOfSecureTextBoxSample,
+            content = { SecureTextBoxSample() }
+        )
     }
 }
 
@@ -57,4 +68,22 @@ private fun TextBoxHeaderSample() {
         // placeholder = { Text("Name") },
     )
     // TODO: Support placeholder
+}
+
+@Sample
+@Composable
+private fun SecureTextBoxSample() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        TextField(
+            state = rememberTextFieldState(),
+            header = { Text("Username") }
+        )
+        SecureTextField(
+            state = rememberTextFieldState(),
+            header = { Text("Password") }
+        )
+    }
+
 }
