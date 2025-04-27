@@ -37,7 +37,6 @@ import com.konyaco.fluent.gallery.screen.settings.SettingsScreen
 import com.konyaco.fluent.icons.Icons
 import com.konyaco.fluent.icons.regular.Settings
 import com.konyaco.fluent.surface.Card
-import androidx.compose.ui.window.*
 
 @Composable
 fun App(titleBarHeight: Dp) {

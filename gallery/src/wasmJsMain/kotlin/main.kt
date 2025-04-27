@@ -1,4 +1,5 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.konyaco.fluent.gallery.App
 import com.konyaco.fluent.gallery.GalleryTheme
@@ -7,7 +8,7 @@ import com.konyaco.fluent.gallery.GalleryTheme
 fun main() {
     CanvasBasedWindow("Compose Fluent Design Gallery") {
         GalleryTheme {
-            App()
+            App(0.dp)
         }
     }
 }

@@ -1,4 +1,5 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeViewport
 import com.konyaco.fluent.gallery.App
 import com.konyaco.fluent.gallery.GalleryTheme
@@ -11,7 +12,7 @@ fun main() {
         val body = document.body ?: return@onWasmReady
         ComposeViewport(body) {
             GalleryTheme {
-                App()
+                App(0.dp)
             }
         }
     }

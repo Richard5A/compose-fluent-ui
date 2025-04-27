@@ -27,7 +27,9 @@ fun main() = application {
         val isMacOS = remember { hostOs.isMacOS }
         val titleBarHeight = if (!isFullscreen and isMacOS) { 28.dp } else { 0.dp }
 
-        GalleryTheme {
+        GalleryTheme(
+            displayMicaLayer = false
+        ) {
             //TODO Make Window transparent.
             WindowStyle(
                 isDarkTheme = LocalStore.current.darkMode,
